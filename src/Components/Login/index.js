@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useGoogleLogin,GoogleLogin } from '@react-oauth/google';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { IoLogoLinkedin, IoLogoOctocat } from "react-icons/io";
@@ -7,18 +8,30 @@ import { FaTwitter } from "react-icons/fa6";
 import './index.css'
 
 function Login({ onLoginSuccess }) {
+    const navigation = useNavigate()
     const responseGoogle = (response) => {
         console.log(response);
         if (response.profileObj) {
             onLoginSuccess(response);
         }
     };
-
+    const onSuccess = (codeResponse) => {
+        console.log(codeResponse) // Handle the response here
+        console.log("botop")
+        navigation('/user/dashboard')
+        console.log("top")
+        // You can perform additional actions after successful login
+      };
+    
+      const login = useGoogleLogin({
+        onSuccess,
+        flow: 'implicit', // Choose the flow type (implicit or authorization code)
+        // Add other configuration options if needed
+      });
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errorMsg, setErrorMsg] = useState('')
 
-    const navigation = useNavigate()
 
     const onChangeEmail = (e) => {
         setEmail(e.target.value)
@@ -60,6 +73,17 @@ function Login({ onLoginSuccess }) {
                     <h1 className='login-heading'>Sign In</h1>
                     <p className='login-description'>Sign in to your account</p>
                     <div className='auto-container'>
+                    <button onClick={() => login()}>
+      Sign in with Google 🚀
+    </button>
+    {/* <GoogleLogin
+  onSuccess={credentialResponse => {
+    console.log(credentialResponse);
+  }}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+/>; */}
                         {/* <GoogleLogin
                             clientId="YOUR_CLIENT_ID.apps.googleusercontent.com"
                             buttonText="Login with Google"

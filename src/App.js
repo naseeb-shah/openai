@@ -11,6 +11,7 @@ import Notification from './Components/Notification';
 import Settings from './Components/Settings';
 import { useEffect, useState } from 'react';
 import LandingPage from './Components/LandingPage';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +28,8 @@ function App() {
   };
 
   return (
+    <GoogleOAuthProvider clientId="1010423947497-d5jr0tfmg2queojpk7sc6e909h198te5.apps.googleusercontent.com">
+
     <div className="App">
       <BrowserRouter>
         <Routes>
@@ -36,6 +39,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
+    </GoogleOAuthProvider>
   );
 }
 
