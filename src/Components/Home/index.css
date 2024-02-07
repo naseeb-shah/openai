@@ -1,0 +1,11 @@
+.home-container {
+    background-color: rgb(247, 248, 252);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100%;
+}
+
