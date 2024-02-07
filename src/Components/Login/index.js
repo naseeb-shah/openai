@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GoogleLogin } from 'react-google-login';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { IoLogoLinkedin, IoLogoOctocat } from "react-icons/io";
 import { FaGithub } from "react-icons/fa";
