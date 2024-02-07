@@ -60,20 +60,20 @@ function Login({ onLoginSuccess }) {
                     <h1 className='login-heading'>Sign In</h1>
                     <p className='login-description'>Sign in to your account</p>
                     <div className='auto-container'>
-                        <GoogleLogin
+                        {/* <GoogleLogin
                             clientId="YOUR_CLIENT_ID.apps.googleusercontent.com"
                             buttonText="Login with Google"
                             onSuccess={responseGoogle}
                             onFailure={responseGoogle}
                             cookiePolicy={'single_host_origin'}
-                        />
-                        <GoogleLogin
+                        /> */}
+                        {/* <GoogleLogin
                             clientId="YOUR_CLIENT_ID.apps.googleusercontent.com"
                             buttonText="Login with Google"
                             onSuccess={responseGoogle}
                             onFailure={responseGoogle}
                             cookiePolicy={'single_host_origin'}
-                        />
+                        /> */}
                     </div>
                     <form className='form-container'>
                         <div className='input-fields-container'>
