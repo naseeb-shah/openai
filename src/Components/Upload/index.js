@@ -78,6 +78,7 @@ const parseExcelData = (file) => {
         const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
         console.log(jsonData)
+        jsonData.shift()
         setExcelData(jsonData)
         ; // Log the parsed data
     };
@@ -123,18 +124,18 @@ const parseExcelData = (file) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {excelData.map((fileObj, index) => (
+                            {excelData?.map((fileObj, index) => (
                                 <tr key={index} className='row'>
                                     <td>{index + 1 > 9 ? index : `0${index + 1}`}</td>
-                                    <td>{fileObj[0]}</td>
                                     <td>{fileObj[1]}</td>
+                                    <td>{fileObj[2]}</td>
                                     <td>
                                         <select onChange={(e) => console.log(e, index)}>
-                                            <option value="">Select Tag</option>
-                                            <option value="tag1">Tag 1</option>
-                                            <option value="tag2">Tag 2</option>
-                                            <option value="tag3">Tag 3</option>
-                                            <option value="tag4">Tag 4</option>
+                                            {
+                                                fileObj[3]?.split(",").map((e)=> <option value={e}>{e}</option>)
+}
+                                            
+                                           
                                         </select>
                                     </td>
                                     <td>
