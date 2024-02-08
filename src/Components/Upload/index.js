@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { FiUpload } from 'react-icons/fi';
 import { MdCancel } from "react-icons/md";
+import * as XLSX from 'xlsx';
 import './index.css';
 import Header from '../Header';
 
@@ -8,6 +9,7 @@ const Upload = ({ toggleSidebar }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [isLoading, setLoading] = useState(false);
+    const [excelData,setExcelData]=useState(null)
 
     const fileInputRef = useRef(null);
 
@@ -34,6 +36,7 @@ const Upload = ({ toggleSidebar }) => {
                 setSelectedFile(null);
             }
             setLoading(false);
+            parseExcelData(selectedFile)
         }, 1000);
 
         return () => clearTimeout(id);
@@ -60,9 +63,31 @@ const Upload = ({ toggleSidebar }) => {
         toggleSidebar()
     }
 
+    // Function to parse Excel file data
+const parseExcelData = (file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        
+        // Assume you want to read the first sheet
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        
+        // Convert the sheet to JSON
+        const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+        console.log(jsonData)
+        setExcelData(jsonData)
+        ; // Log the parsed data
+    };
+    reader.readAsArrayBuffer(file);
+};
+
+
     return (
         <div className="upload-container" onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
-            <Header name='Upload CSV' onToggle={onToggle }/>
+            <Header name='Upload CSV' onToggle={onToggle} />
             {/* <h2 className='dashboard-heading'>Dashboard</h2>           */}
 
             <div className='container'>
@@ -86,7 +111,7 @@ const Upload = ({ toggleSidebar }) => {
 
             {uploadedFiles.length > 0 &&
                 <div className="uploaded-files">
-                    <h2 style={{textAlign:'start'}}>Uploads</h2>
+                    <h2 style={{ textAlign: 'start' }}>Uploads</h2>
                     <table className='uploads-container'>
                         <thead>
                             <tr className='head-row'>
@@ -98,13 +123,13 @@ const Upload = ({ toggleSidebar }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {uploadedFiles.map((fileObj, index) => (
+                            {excelData.map((fileObj, index) => (
                                 <tr key={index} className='row'>
                                     <td>{index + 1 > 9 ? index : `0${index + 1}`}</td>
-                                    <td>{fileObj.file.name}</td>
-                                    <td>Sample prefix</td>
+                                    <td>{fileObj[0]}</td>
+                                    <td>{fileObj[1]}</td>
                                     <td>
-                                        <select onChange={(e) => handleTagChange(e, index)}>
+                                        <select onChange={(e) => console.log(e, index)}>
                                             <option value="">Select Tag</option>
                                             <option value="tag1">Tag 1</option>
                                             <option value="tag2">Tag 2</option>
@@ -113,14 +138,14 @@ const Upload = ({ toggleSidebar }) => {
                                         </select>
                                     </td>
                                     <td>
-                                        <ul className='tags-container'>
+                                        {/* <ul className='tags-container'>
                                             {fileObj.tags.map((tag, tagIndex) => (
                                                 <li key={tagIndex} className='tag-item'>
                                                     {tag}
                                                     <MdCancel style={{ cursor: 'pointer' }} onClick={() => handleRemoveTag(index, tagIndex)} />
                                                 </li>
                                             ))}
-                                        </ul>
+                                        </ul> */}
                                     </td>
                                 </tr>
                             ))}

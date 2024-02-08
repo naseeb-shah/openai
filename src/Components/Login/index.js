@@ -72,18 +72,11 @@ function Login({ onLoginSuccess }) {
                 <div className='login-form-container'>
                     <h1 className='login-heading'>Sign In</h1>
                     <p className='login-description'>Sign in to your account</p>
-                    <div className='auto-container'>
-                    <button onClick={() => login()}>
+                    <div className='auto-container' >
+                    <button onClick={() => login()} style={{backgroundColor:'white',borderRadius:5,padding:2}}>
       Sign in with Google 🚀
     </button>
-    {/* <GoogleLogin
-  onSuccess={credentialResponse => {
-    console.log(credentialResponse);
-  }}
-  onError={() => {
-    console.log('Login Failed');
-  }}
-/>; */}
+   
                         {/* <GoogleLogin
                             clientId="YOUR_CLIENT_ID.apps.googleusercontent.com"
                             buttonText="Login with Google"
