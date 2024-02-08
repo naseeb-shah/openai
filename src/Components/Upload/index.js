@@ -47,16 +47,30 @@ const Upload = ({ toggleSidebar }) => {
     };
 
     const handleTagChange = (e, index) => {
-        const value = e.target.value;
-        const updatedFiles = [...uploadedFiles];
-        updatedFiles[index].tags.push(value);
-        setUploadedFiles(updatedFiles);
+        let updatedData=[...excelData]
+       if(updatedData[index][4]?.length){
+        updatedData[index][4]=[e.target.value,...excelData[index][4]]
+
+    }else{
+        updatedData[index][4]=[e.target.value]
+
+       }
+        
+        setExcelData(updatedData)
     };
 
-    const handleRemoveTag = (fileIndex, tagIndex) => {
-        const updatedFiles = [...uploadedFiles];
-        updatedFiles[fileIndex].tags.splice(tagIndex, 1);
-        setUploadedFiles(updatedFiles);
+    const handleRemoveTag = (index, tag) => {
+        let updatedData=[...excelData]
+       
+        updatedData[index][4]=excelData[index][4].filter((e)=>e!=tag)
+
+    
+        
+
+       
+        
+        setExcelData(updatedData)
+       
     };
 
     const onToggle = () => {
@@ -125,28 +139,28 @@ const parseExcelData = (file) => {
                         </thead>
                         <tbody>
                             {excelData?.map((fileObj, index) => (
-                                <tr key={index} className='row'>
+                                <tr  className='row' key={index+fileObj[1]}>
                                     <td>{index + 1 > 9 ? index : `0${index + 1}`}</td>
-                                    <td>{fileObj[1]}</td>
+                                    <td><a href={fileObj[1]}>{fileObj[1]}</a></td>
                                     <td>{fileObj[2]}</td>
                                     <td>
-                                        <select onChange={(e) => console.log(e, index)}>
+                                        <select onChange={(e) => handleTagChange(e, index)}>
                                             {
-                                                fileObj[3]?.split(",").map((e)=> <option value={e}>{e}</option>)
+                                                fileObj[3]?.split(",").map((e)=> <option key={e} value={e}>{e}</option>)
 }
                                             
                                            
                                         </select>
                                     </td>
                                     <td>
-                                        {/* <ul className='tags-container'>
-                                            {fileObj.tags.map((tag, tagIndex) => (
+                                      {fileObj[4]?.length&&  <ul className='tags-container'>
+                                            {fileObj[4].map((tag, tagIndex) => (
                                                 <li key={tagIndex} className='tag-item'>
                                                     {tag}
-                                                    <MdCancel style={{ cursor: 'pointer' }} onClick={() => handleRemoveTag(index, tagIndex)} />
+                                                    <MdCancel style={{ cursor: 'pointer' }} onClick={() => handleRemoveTag(index, tag)} />
                                                 </li>
                                             ))}
-                                        </ul> */}
+                                        </ul>}
                                     </td>
                                 </tr>
                             ))}
